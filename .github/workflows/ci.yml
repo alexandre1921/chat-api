@@ -1,0 +1,44 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: myuser
+          POSTGRES_PASSWORD: mypassword
+          POSTGRES_DB: chat_db
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U myuser" 
+          --health-interval=10s 
+          --health-timeout=5s 
+          --health-retries=5
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v3
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      - name: Instalar dependências
+        run: npm install
+
+      - name: Executar testes
+        env:
+          DATABASE_URL: "postgresql://myuser:mypassword@localhost:5432/chat_db?schema=public"
+          JWT_SECRET: "seu_seguro_jwt"
+        run: npm run test -- --coverage
