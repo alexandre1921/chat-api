@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/unbound-method */
 import { Test, TestingModule } from '@nestjs/testing';
 import { MessagesController } from './messages.controller';
 import { MessagesService } from './messages.service';
@@ -41,11 +42,12 @@ describe('MessagesController', () => {
     const dto: CreateMessageDto = {
       senderId: 'uuid-sample',
       content: 'Hello, world!',
-      replyTo: null,
+      replyTo: undefined,
     };
 
     const result = await controller.create(dto);
     expect(result).toEqual({ id: '1', ...dto });
+
     expect(service.createMessage).toHaveBeenCalledWith(dto);
   });
 

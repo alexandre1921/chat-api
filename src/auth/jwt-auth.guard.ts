@@ -1,7 +1,7 @@
 import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import * as jwt from 'jsonwebtoken';
-import { env } from 'src/constants/env';
+import { env } from '../constants/env';
 interface RequestWithUser extends Request {
   user: string | jwt.JwtPayload;
 }

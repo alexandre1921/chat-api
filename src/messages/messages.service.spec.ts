@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/unbound-method */
 import { Test, TestingModule } from '@nestjs/testing';
 import { MessagesService } from './messages.service';
 import { PrismaService } from '../../prisma/prisma.service';
@@ -33,7 +34,7 @@ describe('MessagesService', () => {
       const createDto = {
         senderId: 'uuid-sample',
         content: 'Hello, World!',
-        replyTo: null,
+        replyTo: undefined,
       };
       const createdMessage = {
         id: 'uuid-created',

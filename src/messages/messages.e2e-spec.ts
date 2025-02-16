@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
-import * as request from 'supertest';
+import request from 'supertest';
 import { AppModule } from '../app.module';
 
 describe('MessagesController (e2e)', () => {
@@ -32,6 +32,7 @@ describe('MessagesController (e2e)', () => {
       .expect(201);
 
     expect(response.body).toHaveProperty('id');
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     expect(response.body.content).toEqual(createDto.content);
   });
 
