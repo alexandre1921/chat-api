@@ -21,7 +21,7 @@ export class MessagesService {
   async updateMessage(id: string, dto: UpdateMessageDto) {
     const message = await this.prisma.message.findUnique({ where: { id } });
     if (!message) {
-      throw new NotFoundException(`Mensagem com id ${id} não encontrada`);
+      throw new NotFoundException(`Message with id ${id} not found`);
     }
     return await this.prisma.message.update({
       where: { id },
@@ -34,7 +34,7 @@ export class MessagesService {
   async deleteMessage(id: string) {
     const message = await this.prisma.message.findUnique({ where: { id } });
     if (!message) {
-      throw new NotFoundException(`Mensagem com id ${id} não encontrada`);
+      throw new NotFoundException(`Message with id ${id} not found`);
     }
     await this.prisma.message.delete({ where: { id } });
   }
@@ -45,7 +45,7 @@ export class MessagesService {
     });
     if (!original) {
       throw new NotFoundException(
-        `Mensagem original com id ${replyToId} não encontrada`,
+        `Original message with id ${replyToId} not found`,
       );
     }
     return await this.prisma.message.create({
