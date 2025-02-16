@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.chatApi.fullname }}
+  labels:
+    app: {{ .Values.chatApi.name }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Values.chatApi.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.chatApi.name }}
+    spec:
+      containers:
+        - name: {{ .Values.chatApi.name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          ports:
+            - containerPort: {{ .Values.chatApi.containerPort }}
+          env:
+            - name: DATABASE_URL
+              value: "{{ .Values.env.DATABASE_URL }}"
+            - name: JWT_SECRET
+              value: "{{ .Values.env.JWT_SECRET }}"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.chatApi.serviceName }}
+spec:
+  type: NodePort
+  selector:
+    app: {{ .Values.chatApi.name }}
+  ports:
+    - protocol: TCP
+      port: {{ .Values.chatApi.containerPort }}
+      targetPort: {{ .Values.chatApi.containerPort }}
+      nodePort: {{ .Values.chatApi.nodePort }}

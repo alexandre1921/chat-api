@@ -1,0 +1,32 @@
+replicaCount: 2
+
+image:
+  repository: myrepo/chat-api
+  tag: "latest"
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 3000
+
+env:
+  DATABASE_URL: "postgresql://myuser:mypassword@postgres:5432/chat_db?schema=public"
+  JWT_SECRET: "your_jwt_secret_here"
+  POSTGRES_USER: "myuser"
+  POSTGRES_PASSWORD: "mypassword"
+  POSTGRES_DB: "chat_db"
+
+chatApi:
+  fullname: "chat-api"
+  name: "chat-api"
+  serviceName: "chat-api-service"
+  containerPort: 3000
+  nodePort: 30000
+
+postgres:
+  image: postgres:15
+  fullname: "postgres"
+  name: "postgres"
+  serviceName: "postgres-service"
+  containerPort: 5432
+  postgresStorageName: "postgres-storage"

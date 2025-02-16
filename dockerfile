@@ -1,4 +1,4 @@
-FROM node:16-alpine AS builder
+FROM node:20-alpine AS builder
 
 WORKDIR /app
 
@@ -8,15 +8,17 @@ RUN npm install
 COPY . .
 RUN npm run build
 
-FROM node:16-alpine
+FROM node:20-alpine
 
 WORKDIR /app
 
+COPY ./prisma ./prisma
 COPY package*.json ./
 RUN npm install --production
+RUN npm run generate
 
 COPY --from=builder /app/dist ./dist
 
 EXPOSE 3000
 
-CMD ["node", "dist/main.js"]
+CMD ["node", "dist/src/main.js"]

@@ -42,3 +42,12 @@ jobs:
           DATABASE_URL: "postgresql://myuser:mypassword@localhost:5432/chat_db?schema=public"
           JWT_SECRET: "seu_seguro_jwt"
         run: npm run test -- --coverage
+
+      - name: Set up Kubeconfig
+        run: |
+          echo "${{ secrets.KUBECONFIG }}" > $HOME/.kube/config
+
+      - name: Deploy to Kubernetes
+        run: |
+          helm upgrade --install chat-api ./helm-chart --namespace production --set image.tag=${{ github.sha }}
+
